@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
 
-    private var _stToday = MutableLiveData<Int>()
+    var _stToday = MutableLiveData<Int>()
     val stToday : LiveData<Int> = _stToday
 
     var _stGoal = MutableLiveData<Int>()
