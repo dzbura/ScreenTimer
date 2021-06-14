@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="mainFragment"
+            type="com.example.screentimer.ui.SetGoalFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.example.screentimer.ui.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.SetGoalFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+
+        <TextView
+            android:id="@+id/setGoalTitle"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="SET YOUR GOAL HERE DUDE"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/setGoalInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/setGoalTitle"
+            android:hint="Ented your daily goal in minutes"
+            />
+        <Button
+            android:id="@+id/saveGoalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> mainFragment.saveGoal()}"
+            android:text="Save goal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setGoalInput" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

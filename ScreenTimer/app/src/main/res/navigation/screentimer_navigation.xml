@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/screentimer_navigation"
+    app:startDestination="@id/todayFragment">
+
+    <fragment
+        android:id="@+id/todayFragment"
+        android:name="com.example.screentimer.ui.TodayFragment"
+        android:label="TodayFragment" >
+        <action
+            android:id="@+id/action_todayFragment_to_setGoalFragment"
+            app:destination="@id/setGoalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/setGoalFragment"
+        android:name="com.example.screentimer.ui.SetGoalFragment"
+        android:label="fragment_set_goal"
+        tools:layout="@layout/fragment_set_goal" >
+        <action
+            android:id="@+id/action_setGoalFragment_to_todayFragment"
+            app:destination="@id/todayFragment" />
+    </fragment>
+</navigation>

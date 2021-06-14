@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="mainFragment"
+            type="com.example.screentimer.ui.TodayFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.example.screentimer.ui.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.TodayFragment">
+
+        <TextView
+            android:id="@+id/pageTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="STATS TODAY"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <pl.pawelkleczkowski.customgauge.CustomGauge
+            android:id="@+id/gauge1"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            app:gaugeDividerDrawLast="true"
+            app:gaugeEndValue="1000"
+            app:gaugePointEndColor="#F44336"
+            app:gaugePointSize="20"
+            app:gaugePointStartColor="#F44336"
+            app:gaugeStartAngle="135"
+            app:gaugeStartValue="0"
+            app:gaugeStrokeCap="ROUND"
+            app:gaugeStrokeColor="#5A5A5A"
+            app:gaugeStrokeWidth="10dp"
+            app:gaugeSweepAngle="270"
+
+            app:layout_constraintTop_toBottomOf="@+id/pageTitle" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_your_goal"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/gauge1" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="gfsvxb"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="44dp"
+            android:text="TextView"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/textView1"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <Button
+            android:id="@+id/setGoalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> mainFragment.setGoal()}"
+            android:text="Set goal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
