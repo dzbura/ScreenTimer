@@ -23,9 +23,13 @@
             android:id="@+id/pageTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+            android:gravity="center"
             android:text="STATS TODAY"
             android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <pl.pawelkleczkowski.customgauge.CustomGauge
             android:id="@+id/gauge1"
@@ -47,14 +51,14 @@
             app:gaugeStrokeColor="#5A5A5A"
             app:gaugeStrokeWidth="10dp"
             app:gaugeSweepAngle="270"
-
+            android:layout_margin="20dp"
             app:layout_constraintTop_toBottomOf="@+id/pageTitle" />
 
         <TextView
             android:id="@+id/textView"
+            android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/set_your_goal"
             android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/gauge1" />
 
@@ -62,21 +66,11 @@
             android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="gfsvxb"
             android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:layout_editor_absoluteX="0dp" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="44dp"
-            android:text="TextView"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/textView1"
-            tools:layout_editor_absoluteX="0dp" />
+            android:layout_margin="20dp"/>
 
         <Button
             android:id="@+id/setGoalButton"
@@ -86,6 +80,6 @@
             android:text="Set goal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/textView1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

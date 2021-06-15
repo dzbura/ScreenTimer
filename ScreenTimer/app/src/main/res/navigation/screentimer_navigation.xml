@@ -22,4 +22,14 @@
             android:id="@+id/action_setGoalFragment_to_todayFragment"
             app:destination="@id/todayFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/monthFragment"
+        android:name="com.example.screentimer.ui.MonthFragment"
+        android:label="fragment_month"
+        tools:layout="@layout/fragment_month" />
+    <fragment
+        android:id="@+id/weekFragment"
+        android:name="com.example.screentimer.ui.WeekFragment"
+        android:label="fragment_week"
+        tools:layout="@layout/fragment_week" />
 </navigation>

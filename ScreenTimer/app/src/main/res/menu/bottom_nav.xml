@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/todayFragment"
+        android:title="Today"
+        android:icon="@drawable/today"/>
+    <item
+        android:id="@+id/weekFragment"
+        android:title="Week"
+        android:icon="@drawable/week"
+        />
+    <item
+        android:id="@+id/monthFragment"
+        android:title="Month"
+        android:icon="@drawable/month" />
+</menu>

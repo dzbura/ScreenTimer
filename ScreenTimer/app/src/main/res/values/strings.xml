@@ -3,4 +3,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="set_your_goal">Set your goal</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="time_format">%d hour(s) and %d minute(s)</string>
+    <string name="hours_time_format">%d hour(s)</string>
+    <string name="minutes_time_format">%d minute(s)</string>
+    <string name="phone_usage_today">You have used your phone for %s minutes today so far</string>
+    <string name="set_daily_goal_info">Set your daily goal by clicking "Set goal"</string>
 </resources>
