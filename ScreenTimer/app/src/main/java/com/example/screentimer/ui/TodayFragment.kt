@@ -1,14 +1,15 @@
 package com.example.screentimer.ui
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.example.screentimer.R
 import com.example.screentimer.UsageStatsService
 import com.example.screentimer.databinding.FragmentTodayBinding
@@ -20,15 +21,16 @@ class TodayFragment : Fragment() {
 
     private var binding : FragmentTodayBinding? = null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val fragmentBinding = FragmentTodayBinding.inflate(inflater,container, false)
 
         if (UsageStatsService.checkUsageStatsPermission(requireContext())) {
-            sharedViewModel._stToday.value = UsageStatsService.getUsageStats(requireContext())
+            var statList : List<UsageStatsService.Stat> = UsageStatsService.getTodayStats(context)
+            sharedViewModel._stToday.value = (UsageStatsService.getTotal(statList)/60000).toInt()
             if (sharedViewModel.stGoal.value == null) {
                 fragmentBinding.textView.text = getString(R.string.phone_usage_today_nogoal, formatTime(sharedViewModel.stToday.value!!))
                 fragmentBinding.textView1.text = getString(R.string.set_daily_goal_info)
@@ -58,10 +60,6 @@ class TodayFragment : Fragment() {
             viewModel = sharedViewModel
             mainFragment = this@TodayFragment
         }
-    }
-
-    fun setGoal() {
-        findNavController().navigate(R.id.action_todayFragment_to_setGoalFragment)
     }
 
     fun formatTime(minutes : Int) : String {

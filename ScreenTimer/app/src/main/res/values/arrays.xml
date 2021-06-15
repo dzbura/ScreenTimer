@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="excluded_apps">
+        <item>com.google.android.ext.services</item>
+        <item>com.android.providers.telephony</item>
+        <item>com.google.android.googlequicksearchbox</item>
+        <item>com.android.providers.media</item>
+        <item>com.android.defcontainer</item>
+        <item>com.android.vending</item>
+        <item>android</item>
+        <item>com.google.android.gm</item>
+        <item>com.google.android.setupwizard</item>
+        <item>com.android.printspooler</item>
+        <item>com.google.android.dialer</item>
+        <item>com.android.keychain</item>
+        <item>com.google.android.packageinstaller</item>
+        <item>com.google.android.gms</item>
+        <item>com.google.android.gsf</item>
+        <item>com.google.android.partnersetup</item>
+        <item>com.google.android.apps.nexuslauncher</item>
+        <item>com.android.providers.blockednumber</item>
+        <item>com.android.providers.userdictionary</item>
+        <item>com.android.systemui</item>
+        <item>com.android.development</item>
+        <item>com.google.android.inputmethod.latin</item>
+        <item>com.android.providers.calendar</item>
+        <item>com.android.mms.service</item>
+    </string-array>
+</resources>

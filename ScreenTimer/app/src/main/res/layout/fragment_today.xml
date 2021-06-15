@@ -72,14 +72,5 @@
             app:layout_constraintTop_toBottomOf="@+id/textView"
             android:layout_margin="20dp"/>
 
-        <Button
-            android:id="@+id/setGoalButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> mainFragment.setGoal()}"
-            android:text="Set goal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

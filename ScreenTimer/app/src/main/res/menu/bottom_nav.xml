@@ -14,4 +14,9 @@
         android:id="@+id/monthFragment"
         android:title="Month"
         android:icon="@drawable/month" />
+    <item
+        android:id="@+id/setGoalFragment"
+        android:title="Settings"
+        android:icon="@drawable/target"
+        />
 </menu>
