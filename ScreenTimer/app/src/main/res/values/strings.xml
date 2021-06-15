@@ -7,9 +7,13 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="time_format">%d hour(s) and %d minute(s)</string>
-    <string name="hours_time_format">%d hour(s)</string>
-    <string name="minutes_time_format">%d minute(s)</string>
-    <string name="phone_usage_today">You have used your phone for %s minutes today so far</string>
+    <string name="time_format">%d h and %d min</string>
+    <string name="hours_time_format">%d h</string>
+    <string name="minutes_time_format">%d min</string>
+    <string name="phone_usage_today_nogoal">You have used your phone for %s today so far</string>
     <string name="set_daily_goal_info">Set your daily goal by clicking "Set goal"</string>
+    <string name="phone_usage_today">You have used your phone for %s out of %s set as your daily goal.</string>
+    <string name="remaining_screentime">Remaining time until you exceed your daily screentime goal is %s. Use it wisely!</string>
+    <string name="time_exceeded_info">You have used yout phone for %s today and exceeded your goal of %s by %s.</string>
+    <string name="reassurance">I hope you do better tomorrow!</string>
 </resources>
