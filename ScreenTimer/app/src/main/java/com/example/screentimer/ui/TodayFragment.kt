@@ -27,7 +27,6 @@ class TodayFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val fragmentBinding = FragmentTodayBinding.inflate(inflater,container, false)
-
         if (UsageStatsService.checkUsageStatsPermission(requireContext())) {
             var statList : List<UsageStatsService.Stat> = UsageStatsService.getTodayStats(context)
             sharedViewModel._stToday.value = (UsageStatsService.getTotal(statList)/60000).toInt()
