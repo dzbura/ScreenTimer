@@ -2,7 +2,6 @@ package com.example.screentimer.ui
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +9,20 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.screentimer.UsageStatsService
+import com.example.screentimer.data.WeekStat
 import com.example.screentimer.databinding.FragmentMonthBinding
+import com.example.screentimer.ui.adapters.WeekStatAdapter
+import com.example.screentimer.ui.adapters.WeekStatItemClickListener
 
 
-class MonthFragment : Fragment() {
+class MonthFragment : Fragment(), WeekStatItemClickListener {
 
+
+    companion object {
+        val TAG = "WeekStat"
+    }
+
+    lateinit var mAdapter: WeekStatAdapter
     private val sharedViewModel : MainViewModel by activityViewModels()
     private var binding : FragmentMonthBinding? = null
 
@@ -24,15 +32,14 @@ class MonthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val fragmentBinding = FragmentMonthBinding.inflate(inflater,container,false)
+        mAdapter = WeekStatAdapter(this)
+        var stats = arrayListOf<WeekStat>()
         if (UsageStatsService.checkUsageStatsPermission(requireContext())) {
-            var statList: Map<String, Map<String, UsageStatsService.Stat>> = UsageStatsService.getMonthStats(context)
-            statList.forEach() {date, statsForPackage ->
-                statsForPackage.forEach() {packageName, stat ->
-                    Log.d(" tescik","entry for " + date + " for package " + packageName + " totalTime " + stat.totalTime/60000)
-                }
-            }
+            stats = UsageStatsService.getMonthStats(context)
         }
         binding = fragmentBinding
+        mAdapter.submitList(stats)
+        binding!!.recyclerView.adapter = mAdapter
         return fragmentBinding.root
     }
 
@@ -43,5 +50,9 @@ class MonthFragment : Fragment() {
             viewModel = sharedViewModel
             mainFragment = this@MonthFragment
         }
+    }
+
+    override fun chooseWeekStat(weekStat: WeekStat) {
+        TODO("Not yet implemented")
     }
 }
