@@ -12,4 +12,7 @@ class MainViewModel : ViewModel() {
     var _stGoal = MutableLiveData<Int>()
     var stGoal : LiveData<Int> = _stGoal
 
+    var _weekOffset = MutableLiveData<Long>(1L)
+    var weekOffset : LiveData<Long> = _weekOffset
+
 }

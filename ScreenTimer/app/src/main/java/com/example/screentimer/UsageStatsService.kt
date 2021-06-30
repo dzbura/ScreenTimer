@@ -19,12 +19,14 @@ object UsageStatsService {
 
     fun getStats(ctx: Context?, start:Long, end:Long) :  MutableMap<String, MutableList<UsageEvents.Event>> {
         //TODO: Could I make this generic?
+        Log.d("test", start.toString())
+        Log.d("test", end.toString())
+
         var usageManager: UsageStatsManager = ctx?.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
         val systemEvents = usageManager.queryEvents(start, end)
         while (systemEvents.hasNextEvent()) {
             val event = UsageEvents.Event()
-            Log.d("test", event.timeStamp.toString())
             systemEvents.getNextEvent(event)
             val packageEvents = sortedEvents[event.packageName] ?: mutableListOf()
             packageEvents.add(event)
@@ -37,6 +39,8 @@ object UsageStatsService {
         var usageManager: UsageStatsManager = ctx?.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val sortedEvents = mutableMapOf<LocalDate, MutableMap<String, MutableList<UsageEvents.Event>>>()
         val systemEvents = usageManager.queryEvents(start, end)
+        Log.d("test", getLocalDateFromLong(start).toString())
+        Log.d("test", getLocalDateFromLong(end).toString())
         while (systemEvents.hasNextEvent()) {
             val event = UsageEvents.Event()
             systemEvents.getNextEvent(event)
@@ -57,14 +61,17 @@ object UsageStatsService {
     }
 
     fun getWeeksStats(ctx: Context?, offset: Long) : WeekStat {
+        Log.d("current offset", offset.toString())
         val utc = ZoneId.of("UTC")
         val defaultZone = ZoneId.systemDefault()
         val startDate = LocalDate.now().minusDays(7*offset).atStartOfDay(defaultZone).withZoneSameInstant(utc) //TODO:other weeks
         val start = startDate.toInstant().toEpochMilli()
-        val end = startDate.plusDays(7*offset).toInstant().toEpochMilli()
+        val end = startDate.plusDays(7).toInstant().toEpochMilli()
         val weekStat = WeekStat(getLocalDateFromLong(start), getLocalDateFromLong(end), arrayListOf<DayStat>())
-
+        Log.d("test", getLocalDateFromLong(start).toString())
+        Log.d("test", getLocalDateFromLong(end).toString())
         getStatsForWeek(ctx, start, end).forEach(){date, eventsByPkg ->
+            Log.d("test single it", date.toString())
             val pkgsToSkip: Array<String> = ctx?.resources?.getStringArray(R.array.excluded_apps) as Array<String>
             var statDay = DayStat(arrayListOf<Stat>(), date, convertLongToTime(date),0)
             eventsByPkg.forEach{packageName, events ->
