@@ -24,26 +24,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> mainFragment.navigateWeeks(1)}"
-            android:text="Previous week"
-            app:layout_constraintEnd_toStartOf="@id/weekNavNext"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:text="Previous"
+            app:icon="@drawable/prev_nav"
+            app:layout_constraintEnd_toStartOf="@id/weekNavCurrent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Button
-            android:id="@+id/weekNavNext"
-            android:enabled = "@{viewModel.weekOffset > 1}"
+            android:id="@+id/weekNavCurrent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> mainFragment.navigateWeeks(-1)}"
-            android:text="Next week"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:enabled="@{viewModel.weekOffset != 1}"
+            android:onClick="@{() -> mainFragment.navigateWeeks(0)}"
+            android:text="Now"
+            app:icon="@drawable/last_nav"
+            app:layout_constraintEnd_toStartOf="@id/weekNavNext"
             app:layout_constraintStart_toEndOf="@id/weekNavPrevious"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/weekNavNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="@{viewModel.weekOffset > 1}"
+            android:onClick="@{() -> mainFragment.navigateWeeks(-1)}"
+            android:text="Next"
+            app:icon="@drawable/next_nav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/weekNavCurrent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/weekText"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:text="Week"
+            android:text="@{viewModel.displayedWeekString}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/weekNavNext" />
@@ -53,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/week_stat_item"
+            tools:listitem="@layout/day_stat_item"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/weekText"

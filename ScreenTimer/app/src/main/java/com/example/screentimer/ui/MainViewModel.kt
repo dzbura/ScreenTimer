@@ -15,4 +15,7 @@ class MainViewModel : ViewModel() {
     var _weekOffset = MutableLiveData<Long>(1L)
     var weekOffset : LiveData<Long> = _weekOffset
 
+    var _displayedWeekString = MutableLiveData<String>()
+    var displayedWeekString : LiveData<String> = _displayedWeekString
+
 }

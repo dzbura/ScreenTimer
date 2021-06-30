@@ -16,4 +16,8 @@
     <string name="remaining_screentime">Remaining time until you exceed your daily screentime goal is %s. Use it wisely!</string>
     <string name="time_exceeded_info">You have used yout phone for %s today and exceeded your goal of %s by %s.</string>
     <string name="reassurance">I hope you do better tomorrow!</string>
+
+    <string name="day_item_total_usage">Total usage time was %s.</string>
+    <string name="week_to_display">Viewing week from %s to %s.</string>
+
 </resources>
