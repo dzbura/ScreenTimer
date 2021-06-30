@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="mainFragment"
             type="com.example.screentimer.ui.WeekFragment" />
@@ -23,8 +24,10 @@
             android:id="@+id/weekNavPrevious"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/calming_green"
             android:onClick="@{() -> mainFragment.navigateWeeks(1)}"
-            android:text="Previous"
+            android:text="@string/nav_previous"
+            app:cornerRadius="@dimen/cardview_compat_inset_shadow"
             app:icon="@drawable/prev_nav"
             app:layout_constraintEnd_toStartOf="@id/weekNavCurrent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,9 +37,11 @@
             android:id="@+id/weekNavCurrent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/calming_green"
             android:enabled="@{viewModel.weekOffset != 1}"
             android:onClick="@{() -> mainFragment.navigateWeeks(0)}"
-            android:text="Now"
+            android:text="@string/nav_now"
+            app:cornerRadius="@dimen/cardview_compat_inset_shadow"
             app:icon="@drawable/last_nav"
             app:layout_constraintEnd_toStartOf="@id/weekNavNext"
             app:layout_constraintStart_toEndOf="@id/weekNavPrevious"
@@ -46,9 +51,11 @@
             android:id="@+id/weekNavNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/calming_green"
             android:enabled="@{viewModel.weekOffset > 1}"
             android:onClick="@{() -> mainFragment.navigateWeeks(-1)}"
-            android:text="Next"
+            android:text="@string/nav_next"
+            app:cornerRadius="@dimen/cardview_compat_inset_shadow"
             app:icon="@drawable/next_nav"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/weekNavCurrent"
@@ -57,23 +64,25 @@
         <TextView
             android:id="@+id/weekText"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:text="@{viewModel.displayedWeekString}"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/weekNavNext" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="80dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/day_stat_item"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/weekText"
-
-            />
+            app:layout_constraintTop_toBottomOf="@id/weekText"
+            tools:listitem="@layout/day_stat_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -24,10 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_margin="40dp"
-            android:text="SET YOUR GOAL HERE DUDE"
+            android:text="@string/set_your_goal_text"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/seekBar"/>
-            />
 
         <SeekBar
             android:id="@+id/seekBar"
@@ -51,12 +50,14 @@
             app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
         <Button
+            app:cornerRadius="@dimen/cardview_compat_inset_shadow"
+            android:backgroundTint="@color/calming_green"
             android:id="@+id/saveGoalButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="40dp"
             android:onClick="@{() -> mainFragment.saveGoal()}"
-            android:text="Save goal"
+            android:text="@string/save_goal_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/seekbarValue" />

@@ -39,19 +39,19 @@ class TodayFragment : Fragment(), StatItemClickListener {
             var stat : DayStat = UsageStatsService.getTodayStats(context)
             sharedViewModel._stToday.value = (stat.toalTime/60000).toInt()
             if (sharedViewModel.stGoal.value == null) {
-                fragmentBinding.textView.text = getString(R.string.phone_usage_today_nogoal, formatTime(sharedViewModel.stToday.value!!))
-                fragmentBinding.textView1.text = getString(R.string.set_daily_goal_info)
-                fragmentBinding.gauge1.endValue = sharedViewModel.stToday.value!!*2
-                fragmentBinding.gauge1.value = sharedViewModel.stToday.value!!
+                fragmentBinding.currentUsageInfo.text = getString(R.string.phone_usage_today_nogoal, formatTime(sharedViewModel.stToday.value!!))
+                fragmentBinding.currentUsageInfo2.text = getString(R.string.set_daily_goal_info)
+                fragmentBinding.currentUsageGauge.endValue = sharedViewModel.stToday.value!!*2
+                fragmentBinding.currentUsageGauge.value = sharedViewModel.stToday.value!!
             } else if (sharedViewModel.stToday.value!! < sharedViewModel.stGoal.value!!) {
-                fragmentBinding.textView.text = getString(R.string.phone_usage_today, formatTime(sharedViewModel.stToday.value!!), formatTime(sharedViewModel.stGoal.value!!))
-                fragmentBinding.textView1.text = getString(R.string.remaining_screentime, formatTime(sharedViewModel.stGoal.value!! - sharedViewModel.stToday.value!!))
-                fragmentBinding.gauge1.endValue = sharedViewModel.stGoal.value!!
-                fragmentBinding.gauge1.value = sharedViewModel.stToday.value!!
+                fragmentBinding.currentUsageInfo.text = getString(R.string.phone_usage_today, formatTime(sharedViewModel.stToday.value!!), formatTime(sharedViewModel.stGoal.value!!))
+                fragmentBinding.currentUsageInfo2.text = getString(R.string.remaining_screentime, formatTime(sharedViewModel.stGoal.value!! - sharedViewModel.stToday.value!!))
+                fragmentBinding.currentUsageGauge.endValue = sharedViewModel.stGoal.value!!
+                fragmentBinding.currentUsageGauge.value = sharedViewModel.stToday.value!!
             } else if (sharedViewModel.stToday.value!! > sharedViewModel.stGoal.value!!) {
-                fragmentBinding.textView.text =  getString(R.string.time_exceeded_info, formatTime(sharedViewModel.stToday.value!!), formatTime(sharedViewModel.stGoal.value!!), formatTime(sharedViewModel.stToday.value!! - sharedViewModel.stGoal.value!!))
-                fragmentBinding.textView1.text = getString(R.string.reassurance)
-                fragmentBinding.gauge1.pointSize = 360
+                fragmentBinding.currentUsageInfo.text =  getString(R.string.time_exceeded_info, formatTime(sharedViewModel.stToday.value!!), formatTime(sharedViewModel.stGoal.value!!), formatTime(sharedViewModel.stToday.value!! - sharedViewModel.stGoal.value!!))
+                fragmentBinding.currentUsageInfo2.text = getString(R.string.reassurance)
+                fragmentBinding.currentUsageGauge.pointSize = 360
             }
             binding = fragmentBinding
 

@@ -87,7 +87,7 @@ object UsageStatsService {
                     if (startTime != 0L && endTime == 0L) {
                         totalTime += end - 1000 - startTime
                     }
-                    statDay.stats.add(Stat(packageName,totalTime))
+                    statDay.stats.add(Stat(packageName,totalTime, ctx.getString(R.string.day_item_total_usage, formatTime(totalTime, ctx))))
                     statDay.toalTime += totalTime
                     statDay.totalTimeString = ctx!!.getString(R.string.day_item_total_usage, formatTime(totalTime/60000L, ctx))
                 }
@@ -137,8 +137,9 @@ object UsageStatsService {
                 }
                 stats.add(
                     Stat(
-                        packageName,
-                        totalTime
+                        packageName.substringAfterLast("."),
+                        totalTime,
+                        ctx.getString(R.string.day_item_total_usage, formatTime(totalTime, ctx))
                     )
                 )
                 grandTotal = grandTotal + totalTime
