@@ -11,9 +11,7 @@ import com.example.screentimer.R
 import com.example.screentimer.data.Stat
 import com.example.screentimer.databinding.StatItemBinding
 
-class StatAdapter internal constructor(
-    private val mListener: StatItemClickListener
-): ListAdapter<Stat, StatAdapter.StatViewHolder>(StatDiffCallback()) {
+class StatAdapter internal constructor(): ListAdapter<Stat, StatAdapter.StatViewHolder>(StatDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatViewHolder {
         return StatViewHolder.from(parent)
@@ -21,7 +19,7 @@ class StatAdapter internal constructor(
 
     override fun onBindViewHolder(holder: StatViewHolder, position: Int) {
         val stat = getItem(position)
-        holder.bind(stat, mListener)
+        holder.bind(stat)
     }
 
     override fun getItemCount(): Int {
@@ -32,9 +30,8 @@ class StatAdapter internal constructor(
     class StatViewHolder(val binding: StatItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(currentStat: Stat, listener: StatItemClickListener) {
+        fun bind(currentStat: Stat) {
             binding.stat = currentStat
-            binding.clickListener = listener
             binding.executePendingBindings()
         }
 

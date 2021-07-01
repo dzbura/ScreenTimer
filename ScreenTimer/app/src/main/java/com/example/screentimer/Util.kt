@@ -6,7 +6,9 @@ import java.time.format.DateTimeFormatter
 
 fun formatTime(minutes : Int, ctx : Context) : String {
     var formattedTime = ""
-    if (minutes < 60) {
+    if (minutes == 0) {
+        formattedTime = "< 1 min"
+    } else if (minutes < 60) {
         formattedTime = ctx.getString(R.string.minutes_time_format, minutes)
     } else {
         formattedTime = if (minutes.rem(60) > 0)  ctx.getString(R.string.hours_time_format, minutes / 60) + " " + ctx.getString(R.string.minutes_time_format, minutes.rem(60)) else ctx.getString(R.string.hours_time_format, minutes / 60)
@@ -14,8 +16,9 @@ fun formatTime(minutes : Int, ctx : Context) : String {
     return formattedTime
 }
 
-fun formatTime(minutes : Long, ctx : Context) : String {
-    return formatTime(minutes.toInt(), ctx)
+fun formatTime(millis : Long, ctx : Context) : String {
+    //the long version of formattime takes millis format for easy casts directly from timestamp values
+    return formatTime((millis/60000).toInt(), ctx)
 }
 
 fun formatDate(date: LocalDate): String {

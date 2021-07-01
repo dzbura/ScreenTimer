@@ -10,4 +10,5 @@
     <color name="soft_green">#FFFFFF</color>
     <color name="calming_green">#788E75</color>
     <color name="light_grey">#CFCFCF</color>
+    <color name="less_light_grey">#A1A1A1</color>
 </resources>

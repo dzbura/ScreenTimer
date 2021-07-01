@@ -5,12 +5,11 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import com.example.screentimer.data.DayStat
 import com.example.screentimer.data.Stat
 import com.example.screentimer.data.WeekStat
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
+import java.time.*
 import java.util.*
 
 object UsageStatsService {
@@ -69,6 +68,9 @@ object UsageStatsService {
                     var startTime = 0L
                     var endTime = 0L
                     var totalTime = 0L
+
+                    val startDay = date.atStartOfDay(defaultZone).toInstant()?.toEpochMilli()
+                    val endDay = date.atTime(LocalTime.MAX).atZone(defaultZone).toInstant().toEpochMilli()
                     events.forEach {
                         if (it.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
                             startTime = it.timeStamp
@@ -76,7 +78,10 @@ object UsageStatsService {
                             endTime = it.timeStamp
                         }
                         if (startTime == 0L && endTime != 0L) {
-                            startTime = start
+                            //start = week start and you should count day start
+                            Log.d("time debugging", date.atStartOfDay(defaultZone).toString())
+                            Log.d("time debugging", packageName + date.toString() + LocalDateTime.ofInstant(Instant.ofEpochMilli(endTime), defaultZone).toString())
+                            startTime = startDay!!
                         }
                         if (startTime != 0L && endTime != 0L) {
                             totalTime += endTime - startTime
@@ -85,13 +90,14 @@ object UsageStatsService {
                         }
                     }
                     if (startTime != 0L && endTime == 0L) {
-                        totalTime += end - 1000 - startTime
+                        totalTime += endDay - 1000 - startTime
                     }
-                    statDay.stats.add(Stat(packageName,totalTime, ctx.getString(R.string.day_item_total_usage, formatTime(totalTime, ctx))))
+                    statDay.stats.add(Stat(packageName.substringAfterLast("."),totalTime, formatTime(totalTime, ctx)))
                     statDay.toalTime += totalTime
-                    statDay.totalTimeString = ctx!!.getString(R.string.day_item_total_usage, formatTime(totalTime/60000L, ctx))
+
                 }
             }
+            statDay.totalTimeString = ctx!!.getString(R.string.day_item_total_usage, formatTime(statDay.toalTime, ctx))
             weekStat.stats.add(statDay)
         }
         return weekStat

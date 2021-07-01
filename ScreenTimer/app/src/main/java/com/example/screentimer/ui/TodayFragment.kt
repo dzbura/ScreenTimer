@@ -1,5 +1,6 @@
 package com.example.screentimer.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -32,26 +33,31 @@ class TodayFragment : Fragment(), StatItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val fragmentBinding = FragmentTodayBinding.inflate(inflater,container, false)
-
-        mAdapter = StatAdapter(this)
+        mAdapter = StatAdapter()
 
         if (UsageStatsService.checkUsageStatsPermission(requireContext())) {
-            var stat : DayStat = UsageStatsService.getTodayStats(context)
+            val stat : DayStat = UsageStatsService.getTodayStats(context)
             sharedViewModel._stToday.value = (stat.toalTime/60000).toInt()
-            if (sharedViewModel.stGoal.value == null) {
-                fragmentBinding.currentUsageInfo.text = getString(R.string.phone_usage_today_nogoal, formatTime(sharedViewModel.stToday.value!!))
-                fragmentBinding.currentUsageInfo2.text = getString(R.string.set_daily_goal_info)
-                fragmentBinding.currentUsageGauge.endValue = sharedViewModel.stToday.value!!*2
-                fragmentBinding.currentUsageGauge.value = sharedViewModel.stToday.value!!
-            } else if (sharedViewModel.stToday.value!! < sharedViewModel.stGoal.value!!) {
-                fragmentBinding.currentUsageInfo.text = getString(R.string.phone_usage_today, formatTime(sharedViewModel.stToday.value!!), formatTime(sharedViewModel.stGoal.value!!))
-                fragmentBinding.currentUsageInfo2.text = getString(R.string.remaining_screentime, formatTime(sharedViewModel.stGoal.value!! - sharedViewModel.stToday.value!!))
-                fragmentBinding.currentUsageGauge.endValue = sharedViewModel.stGoal.value!!
-                fragmentBinding.currentUsageGauge.value = sharedViewModel.stToday.value!!
-            } else if (sharedViewModel.stToday.value!! > sharedViewModel.stGoal.value!!) {
-                fragmentBinding.currentUsageInfo.text =  getString(R.string.time_exceeded_info, formatTime(sharedViewModel.stToday.value!!), formatTime(sharedViewModel.stGoal.value!!), formatTime(sharedViewModel.stToday.value!! - sharedViewModel.stGoal.value!!))
-                fragmentBinding.currentUsageInfo2.text = getString(R.string.reassurance)
-                fragmentBinding.currentUsageGauge.pointSize = 360
+            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+            val dailyGoal = sharedPref?.getInt(getString(R.string.preference_daily_goal), 0)
+            when {
+                dailyGoal == 0 -> {
+                    fragmentBinding.currentUsageInfo.text = getString(R.string.phone_usage_today_nogoal, formatTime(sharedViewModel.stToday.value!!))
+                    fragmentBinding.currentUsageInfo2.text = getString(R.string.set_daily_goal_info)
+                    fragmentBinding.currentUsageGauge.endValue = sharedViewModel.stToday.value!!*2
+                    fragmentBinding.currentUsageGauge.value = sharedViewModel.stToday.value!!
+                }
+                sharedViewModel.stToday.value!! < dailyGoal!! -> {
+                    fragmentBinding.currentUsageInfo.text = getString(R.string.phone_usage_today, formatTime(sharedViewModel.stToday.value!!), formatTime(dailyGoal))
+                    fragmentBinding.currentUsageInfo2.text = getString(R.string.remaining_screentime, formatTime(dailyGoal - sharedViewModel.stToday.value!!))
+                    fragmentBinding.currentUsageGauge.endValue = dailyGoal
+                    fragmentBinding.currentUsageGauge.value = sharedViewModel.stToday.value!!
+                }
+                sharedViewModel.stToday.value!! > dailyGoal -> {
+                    fragmentBinding.currentUsageInfo.text =  getString(R.string.time_exceeded_info, formatTime(sharedViewModel.stToday.value!!), formatTime(dailyGoal), formatTime(sharedViewModel.stToday.value!! - dailyGoal))
+                    fragmentBinding.currentUsageInfo2.text = getString(R.string.reassurance)
+                    fragmentBinding.currentUsageGauge.pointSize = 360
+                }
             }
             binding = fragmentBinding
 
@@ -73,13 +79,11 @@ class TodayFragment : Fragment(), StatItemClickListener {
     }
 
     fun formatTime(minutes : Int) : String {
-        var formattedTime = ""
-        if (minutes < 60) {
-            formattedTime = getString(R.string.minutes_time_format, minutes)
+        return if (minutes < 60) {
+            getString(R.string.minutes_time_format, minutes)
         } else {
-            formattedTime = if (minutes.rem(60) > 0)  getString(R.string.hours_time_format, minutes / 60) + " " + getString(R.string.minutes_time_format, minutes.rem(60)) else getString(R.string.hours_time_format, minutes / 60)
+            if (minutes.rem(60) > 0)  getString(R.string.hours_time_format, minutes / 60) + " " + getString(R.string.minutes_time_format, minutes.rem(60)) else getString(R.string.hours_time_format, minutes / 60)
         }
-        return formattedTime
     }
 
     override fun chooseStat(stat: Stat) {

@@ -1,5 +1,6 @@
 package com.example.screentimer.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,8 +23,10 @@ class SetGoalFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val fragmentBinding = FragmentSetGoalBinding.inflate(inflater,container,false)
-        if (sharedViewModel.stGoal.value != null) {
-            fragmentBinding.seekBar.setProgress(sharedViewModel.stGoal.value!!/15)
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val dailyGoal = sharedPref?.getInt(getString(R.string.preference_daily_goal), 0)
+        if (dailyGoal != null) {
+            fragmentBinding.seekBar.setProgress(dailyGoal/15)
         } else {
             fragmentBinding.seekBar.setProgress(0)
         }
@@ -49,7 +52,11 @@ class SetGoalFragment : Fragment() {
     }
 
     fun saveGoal() {
-        sharedViewModel._stGoal.value = binding!!.seekBar.progress*15
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putInt(getString(R.string.preference_daily_goal), binding!!.seekBar.progress*15)
+            apply()
+        }
         Toast.makeText(context, "Your new daily goal was saved", Toast.LENGTH_SHORT).show()
     }
 

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.screentimer.R
@@ -33,6 +34,12 @@ class DayStatAdapter internal constructor(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(currentDayStat: DayStat, listener: DayStatItemClickListener) {
+            val childMembersAdapter = StatAdapter()
+            childMembersAdapter.submitList(currentDayStat.stats)
+            binding.childRecyclerView.adapter = childMembersAdapter
+            binding.childRecyclerView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL,false)
+            //binding.childRecyclerView. = currentDayStat.stats
+            //binding.childRecyclerView.click
             binding.dayStat = currentDayStat
             binding.clickListener = listener
             binding.executePendingBindings()

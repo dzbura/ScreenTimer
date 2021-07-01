@@ -9,13 +9,13 @@ class MainViewModel : ViewModel() {
     var _stToday = MutableLiveData<Int>()
     val stToday : LiveData<Int> = _stToday
 
-    var _stGoal = MutableLiveData<Int>()
-    var stGoal : LiveData<Int> = _stGoal
-
     var _weekOffset = MutableLiveData<Long>(1L)
     var weekOffset : LiveData<Long> = _weekOffset
 
     var _displayedWeekString = MutableLiveData<String>()
     var displayedWeekString : LiveData<String> = _displayedWeekString
+
+    var _noData = MutableLiveData<String>()
+    var noData : LiveData<String> = _noData
 
 }
