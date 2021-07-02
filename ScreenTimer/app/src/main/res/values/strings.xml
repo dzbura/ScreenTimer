@@ -34,5 +34,6 @@
 
     <!---Prefs -->
     <string name="preference_daily_goal">com.example.screentimer.DAILY_GOAL</string>
+    <string name="phone_usage_today_short">%s\nout&nbsp;of\n%s</string>
 
 </resources>

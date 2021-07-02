@@ -23,9 +23,10 @@
             android:id="@+id/pageTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="40dp"
+            android:layout_margin="20dp"
             android:gravity="center"
             android:text="@string/stats_today_pagetitle"
+            android:textSize="20sp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,23 +37,23 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
             android:paddingLeft="20dp"
             android:paddingTop="20dp"
             android:paddingRight="20dp"
             android:paddingBottom="20dp"
             app:gaugeDividerDrawLast="true"
             app:gaugeEndValue="1000"
-            app:gaugePointEndColor="#F44336"
-            app:gaugePointSize="20"
-            app:gaugePointStartColor="#F44336"
+            app:gaugePointEndColor="@color/pale_red"
+            app:gaugePointStartColor="#9F514B"
             app:gaugeStartAngle="135"
             app:gaugeStartValue="0"
             app:gaugeStrokeCap="ROUND"
             app:gaugeStrokeColor="@color/calming_green"
-            app:gaugeStrokeWidth="10dp"
+            app:gaugeStrokeWidth="20dp"
             app:gaugeSweepAngle="270"
-            android:layout_margin="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/pageTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/pageTitle"
+            tools:layout_editor_absoluteX="20dp" />
 
         <TextView
             android:id="@+id/currentUsageInfo"
@@ -61,7 +62,7 @@
             android:layout_margin="20dp"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/currentUsageGauge"
             tools:layout_editor_absoluteX="20dp" />
@@ -70,35 +71,35 @@
             android:id="@+id/currentUsageInfo2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:textAlignment="center"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@+id/currentUsageInfo"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="20dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/currentUsageInfo" />
 
         <TextView
             android:id="@+id/perAppTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:layout_margin="20dp"
+            android:text="@string/usage_per_app_title"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="18sp"
+            android:textSize="15sp"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/currentUsageInfo2"
-            android:text="@string/usage_per_app_title"
-            android:layout_margin="20dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/currentUsageInfo2" />
 
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="120dp"
-            android:background="@color/light_grey"
+            android:layout_height="140dp"
+            android:background="@color/less_light_grey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/perAppTitle">
@@ -108,10 +109,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/stat_item"
-
-                />
+                tools:listitem="@layout/stat_item" />
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/currentUsageGauge"
+            app:layout_constraintEnd_toEndOf="@+id/currentUsageGauge"
+            app:layout_constraintStart_toStartOf="@+id/currentUsageGauge"
+            app:layout_constraintTop_toTopOf="@+id/currentUsageGauge" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

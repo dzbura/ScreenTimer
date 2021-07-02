@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.screentimer.R
@@ -42,18 +43,22 @@ class TodayFragment : Fragment(), StatItemClickListener {
             val dailyGoal = sharedPref?.getInt(getString(R.string.preference_daily_goal), 0)
             when {
                 dailyGoal == 0 -> {
+                    fragmentBinding.textView.text = formatTime(sharedViewModel.stToday.value!!)
                     fragmentBinding.currentUsageInfo.text = getString(R.string.phone_usage_today_nogoal, formatTime(sharedViewModel.stToday.value!!))
                     fragmentBinding.currentUsageInfo2.text = getString(R.string.set_daily_goal_info)
                     fragmentBinding.currentUsageGauge.endValue = sharedViewModel.stToday.value!!*2
                     fragmentBinding.currentUsageGauge.value = sharedViewModel.stToday.value!!
                 }
                 sharedViewModel.stToday.value!! < dailyGoal!! -> {
+                    fragmentBinding.textView.text = getString(R.string.phone_usage_today_short, formatTime(sharedViewModel.stToday.value!!), formatTime(dailyGoal))
                     fragmentBinding.currentUsageInfo.text = getString(R.string.phone_usage_today, formatTime(sharedViewModel.stToday.value!!), formatTime(dailyGoal))
                     fragmentBinding.currentUsageInfo2.text = getString(R.string.remaining_screentime, formatTime(dailyGoal - sharedViewModel.stToday.value!!))
                     fragmentBinding.currentUsageGauge.endValue = dailyGoal
                     fragmentBinding.currentUsageGauge.value = sharedViewModel.stToday.value!!
                 }
                 sharedViewModel.stToday.value!! > dailyGoal -> {
+                    fragmentBinding.textView.setTextColor(ContextCompat.getColor(this!!.requireContext(), R.color.pale_red))
+                    fragmentBinding.textView.text = getString(R.string.phone_usage_today_short, formatTime(sharedViewModel.stToday.value!!), formatTime(dailyGoal))
                     fragmentBinding.currentUsageInfo.text =  getString(R.string.time_exceeded_info, formatTime(sharedViewModel.stToday.value!!), formatTime(dailyGoal), formatTime(sharedViewModel.stToday.value!! - dailyGoal))
                     fragmentBinding.currentUsageInfo2.text = getString(R.string.reassurance)
                     fragmentBinding.currentUsageGauge.pointSize = 360

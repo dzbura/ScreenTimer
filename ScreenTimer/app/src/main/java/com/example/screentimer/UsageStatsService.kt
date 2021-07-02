@@ -5,11 +5,13 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import com.example.screentimer.data.DayStat
 import com.example.screentimer.data.Stat
 import com.example.screentimer.data.WeekStat
-import java.time.*
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneId
 import java.util.*
 
 object UsageStatsService {
@@ -56,9 +58,9 @@ object UsageStatsService {
     fun getWeeksStats(ctx: Context?, offset: Long) : WeekStat {
         val utc = ZoneId.of("UTC")
         val defaultZone = ZoneId.systemDefault()
-        val startDate = LocalDate.now().minusDays(7*offset).atStartOfDay(defaultZone).withZoneSameInstant(utc) //TODO:other weeks
+        val startDate = LocalDate.now().minusDays(7*offset).atStartOfDay(defaultZone).withZoneSameInstant(utc)
         val start = startDate.toInstant().toEpochMilli()
-        val end = startDate.plusDays(7).toInstant().toEpochMilli()
+        val end = startDate.plusDays(8).toInstant().toEpochMilli()
         val weekStat = WeekStat(getLocalDateFromLong(start), getLocalDateFromLong(end), arrayListOf<DayStat>())
         getStatsForWeek(ctx, start, end).forEach(){date, eventsByPkg ->
             val pkgsToSkip: Array<String> = ctx?.resources?.getStringArray(R.array.excluded_apps) as Array<String>
@@ -68,7 +70,6 @@ object UsageStatsService {
                     var startTime = 0L
                     var endTime = 0L
                     var totalTime = 0L
-
                     val startDay = date.atStartOfDay(defaultZone).toInstant()?.toEpochMilli()
                     val endDay = date.atTime(LocalTime.MAX).atZone(defaultZone).toInstant().toEpochMilli()
                     events.forEach {
@@ -78,9 +79,6 @@ object UsageStatsService {
                             endTime = it.timeStamp
                         }
                         if (startTime == 0L && endTime != 0L) {
-                            //start = week start and you should count day start
-                            Log.d("time debugging", date.atStartOfDay(defaultZone).toString())
-                            Log.d("time debugging", packageName + date.toString() + LocalDateTime.ofInstant(Instant.ofEpochMilli(endTime), defaultZone).toString())
                             startTime = startDay!!
                         }
                         if (startTime != 0L && endTime != 0L) {
@@ -119,7 +117,6 @@ object UsageStatsService {
                 var startTime = 0L
                 var endTime = 0L
                 var totalTime = 0L
-                //TODO: pull below foreach into separate fun bc redundant code
                 events.forEach {
                     if (it.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
                         startTime = it.timeStamp

@@ -12,7 +12,7 @@
         />
     <item
         android:id="@+id/monthFragment"
-        android:title="Month"
+        android:title="Stats"
         android:icon="@drawable/month" />
     <item
         android:id="@+id/setGoalFragment"
