@@ -78,8 +78,7 @@ dependencies {
     kapt "android.arch.lifecycle:compiler:1.1.1"
     implementation "android.arch.lifecycle:extensions:1.1.1"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
-
-
+    implementation 'com.jjoe64:graphview:4.2.2'
 }
 
 repositories {

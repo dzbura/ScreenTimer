@@ -29,23 +29,29 @@ class WeekFragment : Fragment(), DayStatItemClickListener, StatItemClickListener
     lateinit var mAdapter: DayStatAdapter
     //lateinit var mDetAdapter: StatAdapter
 
-    private val sharedViewModel : MainViewModel by activityViewModels()
-    private var binding : FragmentWeekBinding? = null
+    private val sharedViewModel: MainViewModel by activityViewModels()
+    private var binding: FragmentWeekBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragmentBinding = FragmentWeekBinding.inflate(inflater,container,false)
+        val fragmentBinding = FragmentWeekBinding.inflate(inflater, container, false)
         mAdapter = DayStatAdapter(this)
         //mDetAdapter = StatAdapter()
-        var stats: WeekStat = WeekStat(LocalDate.now(), LocalDate.now().minusDays(7), arrayListOf<DayStat>())
+        var stats: WeekStat =
+            WeekStat(LocalDate.now(), LocalDate.now().minusDays(7), arrayListOf<DayStat>(), "", 0L)
         if (UsageStatsService.checkUsageStatsPermission(requireContext())) {
             stats = UsageStatsService.getWeeksStats(context, sharedViewModel.weekOffset.value!!)
         } else {
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         }
-        sharedViewModel._displayedWeekString.value = getString(R.string.week_to_display, formatDate(stats.startDate), formatDate(stats.endDate))
+        sharedViewModel._displayedWeekString.value = getString(
+            R.string.week_to_display,
+            formatDate(stats.startDate),
+            formatDate(stats.endDate)
+        )
+        sharedViewModel._displayedAverageString.value = stats.dailyMeanString
         binding = fragmentBinding
 /*
         stats.stats.forEach() {
@@ -60,7 +66,7 @@ class WeekFragment : Fragment(), DayStatItemClickListener, StatItemClickListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.apply{
+        binding?.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
             mainFragment = this@WeekFragment
@@ -71,26 +77,38 @@ class WeekFragment : Fragment(), DayStatItemClickListener, StatItemClickListener
         TODO("Not yet implemented")
     }
 
-    fun navigateWeeks(offset : Long) {
+    fun navigateWeeks(offset: Long) {
         if (offset >= 0L || sharedViewModel._weekOffset.value!! >= 0L) {
-            var stats: WeekStat = WeekStat(LocalDate.now(), LocalDate.now().minusDays(7), arrayListOf<DayStat>())
+            var stats: WeekStat = WeekStat(
+                LocalDate.now(),
+                LocalDate.now().minusDays(7),
+                arrayListOf<DayStat>(),
+                "",
+                0L
+            )
             if (offset == 0L) {
                 sharedViewModel._weekOffset.value = 1L
             } else {
                 sharedViewModel._weekOffset.value = sharedViewModel._weekOffset.value?.plus(offset)
             }
             if (UsageStatsService.checkUsageStatsPermission(requireContext())) {
-                stats = UsageStatsService.getWeeksStats(context, sharedViewModel._weekOffset.value!!)
+                stats =
+                    UsageStatsService.getWeeksStats(context, sharedViewModel._weekOffset.value!!)
             } else {
                 startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
             }
             if (stats.stats.isEmpty()) {
                 sharedViewModel._noData.value = getString(R.string.no_data_for_week)
             } else {
+                sharedViewModel._displayedAverageString.value = stats.dailyMeanString
                 sharedViewModel._noData.value = ""
             }
             mAdapter.submitList(stats.stats)
-            sharedViewModel._displayedWeekString.value = getString(R.string.week_to_display, formatDate(stats.startDate), formatDate(stats.endDate))
+            sharedViewModel._displayedWeekString.value = getString(
+                R.string.week_to_display,
+                formatDate(stats.startDate),
+                formatDate(stats.endDate)
+            )
         }
     }
 

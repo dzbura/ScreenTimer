@@ -35,5 +35,7 @@
     <!---Prefs -->
     <string name="preference_daily_goal">com.example.screentimer.DAILY_GOAL</string>
     <string name="phone_usage_today_short">%s\nout&nbsp;of\n%s</string>
+    <string name="mean_usage_time">Mean usage time was %s</string>
+    <string name="not_enough_data_for_week">There is not enough data to show the graph for selected week</string>
 
 </resources>

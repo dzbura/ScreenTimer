@@ -12,14 +12,16 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
-import java.util.*
 
 object UsageStatsService {
 
-    fun getStats(ctx: Context?, start:Long, end:Long) :  MutableMap<String, MutableList<UsageEvents.Event>> {
-        //TODO: Could I make this generic?
-
-        var usageManager: UsageStatsManager = ctx?.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+    fun getStats(
+        ctx: Context?,
+        start: Long,
+        end: Long
+    ): MutableMap<String, MutableList<UsageEvents.Event>> {
+        var usageManager: UsageStatsManager =
+            ctx?.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val sortedEvents = mutableMapOf<String, MutableList<UsageEvents.Event>>()
         val systemEvents = usageManager.queryEvents(start, end)
         while (systemEvents.hasNextEvent()) {
@@ -32,46 +34,64 @@ object UsageStatsService {
         return sortedEvents
     }
 
-    fun getStatsForWeek(ctx: Context?, start:Long, end:Long) :  MutableMap<LocalDate, MutableMap<String, MutableList<UsageEvents.Event>>> {
-        var usageManager: UsageStatsManager = ctx?.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        val sortedEvents = mutableMapOf<LocalDate, MutableMap<String, MutableList<UsageEvents.Event>>>()
+    fun getStatsForWeek(
+        ctx: Context?,
+        start: Long,
+        end: Long
+    ): MutableMap<LocalDate, MutableMap<String, MutableList<UsageEvents.Event>>> {
+        var usageManager: UsageStatsManager =
+            ctx?.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val sortedEvents =
+            mutableMapOf<LocalDate, MutableMap<String, MutableList<UsageEvents.Event>>>()
         val systemEvents = usageManager.queryEvents(start, end)
         while (systemEvents.hasNextEvent()) {
             val event = UsageEvents.Event()
             systemEvents.getNextEvent(event)
             val eventTimestampDate = getLocalDateFromLong(event.timeStamp)
             if (!sortedEvents.containsKey(eventTimestampDate)) {
-                sortedEvents[eventTimestampDate] = mutableMapOf<String,MutableList<UsageEvents.Event>>()
+                sortedEvents[eventTimestampDate] =
+                    mutableMapOf<String, MutableList<UsageEvents.Event>>()
             }
             if (!sortedEvents[eventTimestampDate]!!.containsKey(event.packageName)) {
-                sortedEvents[eventTimestampDate]!![event.packageName] = mutableListOf<UsageEvents.Event>()
+                sortedEvents[eventTimestampDate]!![event.packageName] =
+                    mutableListOf<UsageEvents.Event>()
             }
             sortedEvents[eventTimestampDate]!![event.packageName]!!.add(event)
         }
         return sortedEvents
     }
 
-    fun getLocalDateFromLong(time: Long) : LocalDate {
+    fun getLocalDateFromLong(time: Long): LocalDate {
         return Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
-    fun getWeeksStats(ctx: Context?, offset: Long) : WeekStat {
+    fun getWeeksStats(ctx: Context?, offset: Long): WeekStat {
         val utc = ZoneId.of("UTC")
         val defaultZone = ZoneId.systemDefault()
-        val startDate = LocalDate.now().minusDays(7*offset).atStartOfDay(defaultZone).withZoneSameInstant(utc)
+        val startDate =
+            LocalDate.now().minusDays(7 * offset).atStartOfDay(defaultZone).withZoneSameInstant(utc)
         val start = startDate.toInstant().toEpochMilli()
         val end = startDate.plusDays(8).toInstant().toEpochMilli()
-        val weekStat = WeekStat(getLocalDateFromLong(start), getLocalDateFromLong(end), arrayListOf<DayStat>())
-        getStatsForWeek(ctx, start, end).forEach(){date, eventsByPkg ->
-            val pkgsToSkip: Array<String> = ctx?.resources?.getStringArray(R.array.excluded_apps) as Array<String>
-            var statDay = DayStat(arrayListOf<Stat>(), date, formatDate(date),0, "")
-            eventsByPkg.forEach{packageName, events ->
+        val weekStat = WeekStat(
+            getLocalDateFromLong(start),
+            getLocalDateFromLong(end - 1L),
+            arrayListOf<DayStat>(),
+            "",
+            0L
+        )
+        var totals: MutableList<Long> = mutableListOf<Long>()
+        getStatsForWeek(ctx, start, end).forEach() { date, eventsByPkg ->
+            val pkgsToSkip: Array<String> =
+                ctx?.resources?.getStringArray(R.array.excluded_apps) as Array<String>
+            var statDay = DayStat(arrayListOf<Stat>(), date, formatDate(date), 0, "")
+            eventsByPkg.forEach { packageName, events ->
                 if (!pkgsToSkip.contains(packageName)) {
                     var startTime = 0L
                     var endTime = 0L
                     var totalTime = 0L
                     val startDay = date.atStartOfDay(defaultZone).toInstant()?.toEpochMilli()
-                    val endDay = date.atTime(LocalTime.MAX).atZone(defaultZone).toInstant().toEpochMilli()
+                    val endDay =
+                        date.atTime(LocalTime.MAX).atZone(defaultZone).toInstant().toEpochMilli()
                     events.forEach {
                         if (it.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
                             startTime = it.timeStamp
@@ -90,18 +110,29 @@ object UsageStatsService {
                     if (startTime != 0L && endTime == 0L) {
                         totalTime += endDay - 1000 - startTime
                     }
-                    statDay.stats.add(Stat(packageName.substringAfterLast("."),totalTime, formatTime(totalTime, ctx)))
+                    statDay.stats.add(
+                        Stat(
+                            packageName.substringAfterLast("."),
+                            totalTime,
+                            formatTime(totalTime, ctx)
+                        )
+                    )
                     statDay.toalTime += totalTime
 
                 }
             }
-            statDay.totalTimeString = ctx!!.getString(R.string.day_item_total_usage, formatTime(statDay.toalTime, ctx))
+            statDay.totalTimeString =
+                ctx!!.getString(R.string.day_item_total_usage, formatTime(statDay.toalTime, ctx))
             weekStat.stats.add(statDay)
+            totals.add(statDay.toalTime)
         }
+        weekStat.dailyMeanString =
+            ctx!!.getString(R.string.mean_usage_time, formatTime(totals.average().toLong(), ctx))
+        weekStat.dailyMeanMillis = totals.average().toLong()
         return weekStat
     }
 
-    fun getTodayStats(ctx: Context?) : DayStat {
+    fun getTodayStats(ctx: Context?): DayStat {
         val utc = ZoneId.of("UTC")
         val defaultZone = ZoneId.systemDefault()
         val startDate = LocalDate.now().atStartOfDay(defaultZone).withZoneSameInstant(utc)
@@ -112,8 +143,9 @@ object UsageStatsService {
 
         // Go through the events by package name
         getStats(ctx, start, end).forEach { packageName, events ->
-            val pkgsToSkip: Array<String> = ctx?.resources?.getStringArray(R.array.excluded_apps) as Array<String>
-            if (!pkgsToSkip.contains(packageName)){
+            val pkgsToSkip: Array<String> =
+                ctx?.resources?.getStringArray(R.array.excluded_apps) as Array<String>
+            if (!pkgsToSkip.contains(packageName)) {
                 var startTime = 0L
                 var endTime = 0L
                 var totalTime = 0L
@@ -153,23 +185,21 @@ object UsageStatsService {
             LocalDate.now(),
             formatDate(LocalDate.now()),
             grandTotal,
-            ctx!!.getString(R.string.day_item_total_usage, formatTime(grandTotal/60000, ctx))
+            ctx!!.getString(R.string.day_item_total_usage, formatTime(grandTotal / 60000, ctx))
         )
     }
 
-    fun checkUsageStatsPermission(ctx : Context): Boolean {
-        //TODO: fix permission check
+    fun checkUsageStatsPermission(ctx: Context): Boolean {
         var appOpsManager: AppOpsManager? = null
         var mode: Int = 0
         appOpsManager = ctx?.getSystemService(Context.APP_OPS_SERVICE)!! as AppOpsManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            mode = appOpsManager.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, 1, ctx.opPackageName)
+            mode = appOpsManager.unsafeCheckOpNoThrow(
+                AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(),
+                ctx.opPackageName
+            )
         }
-        return true//mode == AppOpsManager.MODE_ALLOWED
-    }
-
-    fun getMonthStats(ctx: Context?) : ArrayList<WeekStat> {
-        //TODO: implement for month
-        return arrayListOf<WeekStat>()
+        return mode == AppOpsManager.MODE_ALLOWED
     }
 }

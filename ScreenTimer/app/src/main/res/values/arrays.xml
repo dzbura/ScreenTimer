@@ -26,4 +26,14 @@
         <item>com.android.providers.calendar</item>
         <item>com.android.mms.service</item>
     </string-array>
+    <string-array name="weekday_labels_en">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+
+    </string-array>
 </resources>
